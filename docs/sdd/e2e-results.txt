@@ -1,0 +1,68 @@
+PASS  FR-26 admin lands on the admin overview (dark-1280)
+PASS  FR-27 overview: 6 students, 39 tasks, 23%, 4 critical, 3 overdue  (6,39,23%,4,3)
+PASS  FR-27 attention list starts with Mikael
+PASS  FR-34 admin overview has no horizontal scroll at 1280px
+PASS  FR-30 admin deactivates a student
+PASS  FR-30 admin reactivates the student
+PASS  FR-26 main admin row is protected
+PASS  FR-34 admin users has no horizontal scroll at 1280px
+PASS  FR-31 all tasks filtered by student  (Mikael Lindqvist #6 | Mikael Lindqvist #6 | Mikael Lindqvist #6)
+PASS  no JavaScript errors (admin dark-1280)
+PASS  FR-26 admin lands on the admin overview (light-390)
+PASS  FR-34 admin overview has no horizontal scroll at 390px
+PASS  FR-34 admin users has no horizontal scroll at 390px
+PASS  no JavaScript errors (admin light-390)
+PASS  US1 unauthenticated visitor lands on sign-in
+PASS  FR-01 short password rejected with message
+PASS  FR-01 registration signs in and opens dashboard
+PASS  FR-20 empty state when there are no tasks
+PASS  FR-10 empty title shows "Title can't be empty."
+PASS  FR-35 live preview shows 90 Critical
+PASS  FR-04 task saved and details shown (FR-09)
+PASS  FR-09 breakdown shows deadline part 50.0
+PASS  FR-08 task marked complete
+PASS  FR-15 completed view lists the task
+PASS  FR-33 theme toggles and persists after reload  (light -> dark)
+PASS  FR-03 sign out returns to sign-in
+PASS  no JavaScript errors (new student journey)
+PASS  NFR-02 dashboard ready in under 2 s  (769 ms incl. sign-in)
+PASS  US5 sample dashboard counts 13 / 4 / 6 / 1  (13,4,6,1)
+PASS  FR-20 recommends STRIDE threat model (90)
+PASS  FR-34 dashboard has no horizontal scroll at 1280px
+PASS  FR-14/16 list sorted by priority  (Security lab: STRIDE threat model | Algorithms problem set 4 | Thesis chapter 2 draft)
+PASS  FR-15 subject filter  (Thesis chapter 2 draft | Thesis literature review notes)
+PASS  FR-16 sort by deadline puts the overdue task first  (Scalability quiz reflection)
+PASS  FR-34 task list has no horizontal scroll at 1280px
+PASS  FR-17 upcoming shows 7 tasks for the next 7 days  (7)
+PASS  FR-22 profile shows ID 2 and 17 tasks
+PASS  FR-24 live rule flags "same as current password"  (bad)
+PASS  FR-34 profile has no horizontal scroll at 1280px
+PASS  FR-34 task form has no horizontal scroll at 1280px
+PASS  no JavaScript errors (light-1280)
+PASS  FR-34 dashboard has no horizontal scroll at 1280px
+PASS  FR-34 task list has no horizontal scroll at 1280px
+PASS  FR-34 profile has no horizontal scroll at 1280px
+PASS  FR-34 task form has no horizontal scroll at 1280px
+PASS  no JavaScript errors (dark-1280)
+PASS  FR-34 dashboard has no horizontal scroll at 768px
+PASS  FR-34 task list has no horizontal scroll at 768px
+PASS  FR-34 profile has no horizontal scroll at 768px
+PASS  FR-34 task form has no horizontal scroll at 768px
+PASS  no JavaScript errors (dark-768)
+PASS  FR-34 dashboard has no horizontal scroll at 390px
+PASS  FR-34 navigation is a bottom bar at 390px
+PASS  FR-34 task list has no horizontal scroll at 390px
+PASS  FR-34 profile has no horizontal scroll at 390px
+PASS  FR-34 task form has no horizontal scroll at 390px
+PASS  no JavaScript errors (light-390)
+PASS  FR-34 dashboard has no horizontal scroll at 390px
+PASS  FR-34 navigation is a bottom bar at 390px
+PASS  FR-34 task list has no horizontal scroll at 390px
+PASS  FR-34 profile has no horizontal scroll at 390px
+PASS  FR-34 task form has no horizontal scroll at 390px
+PASS  no JavaScript errors (dark-390)
+PASS  FR-21 another student's task shows "Task not found"
+PASS  FR-32 student is kept out of the admin panel
+PASS  FR-34 sign-in has no horizontal scroll at 390px
+
+66/66 checks passed. Screenshots: /home/claude/task_management_swcon2627_sdd/e2e/screenshots

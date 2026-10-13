@@ -1,0 +1,893 @@
+{
+  "about": "Sample data for StudyFlow SDD v1. Times are hour offsets from the moment the data is loaded. 'expected' is the priority spec.md requires, computed independently; use it as a test oracle.",
+  "formula": "score = deadline*0.50 + difficulty*0.30 + min(hours*10,100)*0.20; deadline band from floor(hours_left/24); level from the score rounded half up",
+  "users": [
+    {
+      "id": 1,
+      "name": "Main Admin",
+      "email": "admin123@gmail.com",
+      "password": "admin@123",
+      "role": "admin",
+      "is_active": true,
+      "joined_days_ago": 30
+    },
+    {
+      "id": 2,
+      "name": "Niladri Saha",
+      "email": "niladri@student.test",
+      "password": "Student@123",
+      "role": "student",
+      "is_active": true,
+      "joined_days_ago": 21
+    },
+    {
+      "id": 3,
+      "name": "Zahra",
+      "email": "zahra@student.test",
+      "password": "Student@123",
+      "role": "student",
+      "is_active": true,
+      "joined_days_ago": 21
+    },
+    {
+      "id": 4,
+      "name": "Khadija",
+      "email": "khadija@student.test",
+      "password": "Student@123",
+      "role": "student",
+      "is_active": true,
+      "joined_days_ago": 20
+    },
+    {
+      "id": 5,
+      "name": "Aino Virtanen",
+      "email": "aino@student.test",
+      "password": "Student@123",
+      "role": "student",
+      "is_active": true,
+      "joined_days_ago": 18
+    },
+    {
+      "id": 6,
+      "name": "Mikael Lindqvist",
+      "email": "mikael@student.test",
+      "password": "Student@123",
+      "role": "student",
+      "is_active": true,
+      "joined_days_ago": 16
+    },
+    {
+      "id": 7,
+      "name": "Sara Ahmed",
+      "email": "sara@student.test",
+      "password": "Student@123",
+      "role": "student",
+      "is_active": false,
+      "joined_days_ago": 15
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "owner_id": 2,
+      "title": "Security lab: STRIDE threat model",
+      "subject": "Software Security",
+      "deadline_offset_hours": 14.5,
+      "difficulty": "Hard",
+      "estimated_hours": 8,
+      "completed": false,
+      "created_offset_hours": -240.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 80,
+        "time_score": 80.0,
+        "priority_score": 90.0,
+        "display_score": 90,
+        "level": "Critical",
+        "overdue": false
+      }
+    },
+    {
+      "id": 2,
+      "owner_id": 2,
+      "title": "Finnish 1 oral exam",
+      "subject": "Finnish 1",
+      "deadline_offset_hours": 13.5,
+      "difficulty": "Medium",
+      "estimated_hours": 3,
+      "completed": false,
+      "created_offset_hours": -216.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 50,
+        "time_score": 30.0,
+        "priority_score": 71.0,
+        "display_score": 71,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 3,
+      "owner_id": 2,
+      "title": "Algorithms problem set 4",
+      "subject": "Algorithms",
+      "deadline_offset_hours": 37.5,
+      "difficulty": "Very Hard",
+      "estimated_hours": 5,
+      "completed": false,
+      "created_offset_hours": -216.5,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 100,
+        "time_score": 50.0,
+        "priority_score": 77.5,
+        "display_score": 78,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 4,
+      "owner_id": 2,
+      "title": "SDD comparison report draft",
+      "subject": "Software Design",
+      "deadline_offset_hours": 40.5,
+      "difficulty": "Hard",
+      "estimated_hours": 6,
+      "completed": false,
+      "created_offset_hours": -192.5,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 80,
+        "time_score": 60.0,
+        "priority_score": 73.5,
+        "display_score": 74,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 5,
+      "owner_id": 2,
+      "title": "Finnish listening exercise",
+      "subject": "Finnish 1",
+      "deadline_offset_hours": 85.5,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "completed": false,
+      "created_offset_hours": -168.5,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 33.0,
+        "display_score": 33,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "id": 6,
+      "owner_id": 2,
+      "title": "Thesis chapter 2 draft",
+      "subject": "Thesis",
+      "deadline_offset_hours": 93.5,
+      "difficulty": "Very Hard",
+      "estimated_hours": 10,
+      "completed": false,
+      "created_offset_hours": -168.5,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 100,
+        "time_score": 100.0,
+        "priority_score": 75.0,
+        "display_score": 75,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 7,
+      "owner_id": 2,
+      "title": "Group presentation slides",
+      "subject": "Software Design",
+      "deadline_offset_hours": 112.5,
+      "difficulty": "Medium",
+      "estimated_hours": 4,
+      "completed": false,
+      "created_offset_hours": -168.5,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 50,
+        "time_score": 40.0,
+        "priority_score": 48.0,
+        "display_score": 48,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "id": 8,
+      "owner_id": 2,
+      "title": "Cloud computing lab 3",
+      "subject": "Cloud Computing",
+      "deadline_offset_hours": 184.5,
+      "difficulty": "Hard",
+      "estimated_hours": 6,
+      "completed": false,
+      "created_offset_hours": -144.5,
+      "expected": {
+        "deadline_score": 25,
+        "difficulty_score": 80,
+        "time_score": 60.0,
+        "priority_score": 48.5,
+        "display_score": 49,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "id": 9,
+      "owner_id": 2,
+      "title": "Database normalization exercises",
+      "subject": "Databases",
+      "deadline_offset_hours": 236.5,
+      "difficulty": "Medium",
+      "estimated_hours": 2,
+      "completed": false,
+      "created_offset_hours": -144.5,
+      "expected": {
+        "deadline_score": 25,
+        "difficulty_score": 50,
+        "time_score": 20.0,
+        "priority_score": 31.5,
+        "display_score": 32,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "id": 10,
+      "owner_id": 2,
+      "title": "Software Security midterm prep",
+      "subject": "Software Security",
+      "deadline_offset_hours": 326.5,
+      "difficulty": "Very Hard",
+      "estimated_hours": 12,
+      "completed": false,
+      "created_offset_hours": -144.5,
+      "expected": {
+        "deadline_score": 25,
+        "difficulty_score": 100,
+        "time_score": 100.0,
+        "priority_score": 62.5,
+        "display_score": 63,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 11,
+      "owner_id": 2,
+      "title": "Thesis literature review notes",
+      "subject": "Thesis",
+      "deadline_offset_hours": 448.5,
+      "difficulty": "Hard",
+      "estimated_hours": 9,
+      "completed": false,
+      "created_offset_hours": -144.5,
+      "expected": {
+        "deadline_score": 10,
+        "difficulty_score": 80,
+        "time_score": 90.0,
+        "priority_score": 47.0,
+        "display_score": 47,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "id": 12,
+      "owner_id": 2,
+      "title": "Parnas paper summary",
+      "subject": "Software Design",
+      "deadline_offset_hours": 496.5,
+      "difficulty": "Easy",
+      "estimated_hours": 2,
+      "completed": false,
+      "created_offset_hours": -144.5,
+      "expected": {
+        "deadline_score": 10,
+        "difficulty_score": 20,
+        "time_score": 20.0,
+        "priority_score": 15.0,
+        "display_score": 15,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "id": 13,
+      "owner_id": 2,
+      "title": "Scalability quiz reflection",
+      "subject": "Software Design",
+      "deadline_offset_hours": -43.5,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "completed": false,
+      "created_offset_hours": -120.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 58.0,
+        "display_score": 58,
+        "level": "Medium",
+        "overdue": true
+      }
+    },
+    {
+      "id": 14,
+      "owner_id": 2,
+      "title": "Design for Change quiz",
+      "subject": "Software Design",
+      "deadline_offset_hours": -79.5,
+      "difficulty": "Medium",
+      "estimated_hours": 2,
+      "completed": true,
+      "created_offset_hours": -312.5,
+      "completed_offset_hours": -288.25,
+      "expected": null
+    },
+    {
+      "id": 15,
+      "owner_id": 2,
+      "title": "Finnish vocabulary set 3",
+      "subject": "Finnish 1",
+      "deadline_offset_hours": -106.5,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "completed": true,
+      "created_offset_hours": -288.5,
+      "completed_offset_hours": -240.25,
+      "expected": null
+    },
+    {
+      "id": 16,
+      "owner_id": 2,
+      "title": "Cloud computing reading week 6",
+      "subject": "Cloud Computing",
+      "deadline_offset_hours": -30.0,
+      "difficulty": "Easy",
+      "estimated_hours": 2,
+      "completed": true,
+      "created_offset_hours": -288.5,
+      "completed_offset_hours": -168.25,
+      "expected": null
+    },
+    {
+      "id": 17,
+      "owner_id": 2,
+      "title": "SDLC lecture notes",
+      "subject": "Software Design",
+      "deadline_offset_hours": -150.0,
+      "difficulty": "Medium",
+      "estimated_hours": 3,
+      "completed": true,
+      "created_offset_hours": -288.5,
+      "completed_offset_hours": -144.25,
+      "expected": null
+    },
+    {
+      "id": 18,
+      "owner_id": 3,
+      "title": "Write acceptance criteria for FR-01 to FR-10",
+      "subject": "Software Design",
+      "deadline_offset_hours": 20.0,
+      "difficulty": "Hard",
+      "estimated_hours": 5,
+      "completed": false,
+      "created_offset_hours": -120.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 80,
+        "time_score": 50.0,
+        "priority_score": 84.0,
+        "display_score": 84,
+        "level": "Critical",
+        "overdue": false
+      }
+    },
+    {
+      "id": 19,
+      "owner_id": 3,
+      "title": "Statistics assignment 2",
+      "subject": "Statistics",
+      "deadline_offset_hours": 44.0,
+      "difficulty": "Medium",
+      "estimated_hours": 4,
+      "completed": false,
+      "created_offset_hours": -96.5,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 50,
+        "time_score": 40.0,
+        "priority_score": 60.5,
+        "display_score": 61,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 20,
+      "owner_id": 3,
+      "title": "UX research interview notes",
+      "subject": "Human-Computer Interaction",
+      "deadline_offset_hours": 100.0,
+      "difficulty": "Medium",
+      "estimated_hours": 3,
+      "completed": false,
+      "created_offset_hours": -96.5,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 50,
+        "time_score": 30.0,
+        "priority_score": 46.0,
+        "display_score": 46,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "id": 21,
+      "owner_id": 3,
+      "title": "Machine learning project proposal",
+      "subject": "Machine Learning",
+      "deadline_offset_hours": 200.0,
+      "difficulty": "Very Hard",
+      "estimated_hours": 10,
+      "completed": false,
+      "created_offset_hours": -96.5,
+      "expected": {
+        "deadline_score": 25,
+        "difficulty_score": 100,
+        "time_score": 100.0,
+        "priority_score": 62.5,
+        "display_score": 63,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 22,
+      "owner_id": 3,
+      "title": "Statistics weekly quiz",
+      "subject": "Statistics",
+      "deadline_offset_hours": -5.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "completed": true,
+      "created_offset_hours": -264.5,
+      "completed_offset_hours": -144.25,
+      "expected": null
+    },
+    {
+      "id": 23,
+      "owner_id": 3,
+      "title": "Finnish 1 homework 5",
+      "subject": "Finnish 1",
+      "deadline_offset_hours": 400.0,
+      "difficulty": "Easy",
+      "estimated_hours": 2,
+      "completed": false,
+      "created_offset_hours": -72.5,
+      "expected": {
+        "deadline_score": 10,
+        "difficulty_score": 20,
+        "time_score": 20.0,
+        "priority_score": 15.0,
+        "display_score": 15,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "id": 24,
+      "owner_id": 4,
+      "title": "Write pytest cases for priority module",
+      "subject": "Software Design",
+      "deadline_offset_hours": 30.0,
+      "difficulty": "Hard",
+      "estimated_hours": 6,
+      "completed": false,
+      "created_offset_hours": -72.5,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 80,
+        "time_score": 60.0,
+        "priority_score": 73.5,
+        "display_score": 74,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 25,
+      "owner_id": 4,
+      "title": "Computer networks lab report",
+      "subject": "Computer Networks",
+      "deadline_offset_hours": 6.0,
+      "difficulty": "Medium",
+      "estimated_hours": 4,
+      "completed": false,
+      "created_offset_hours": -72.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 50,
+        "time_score": 40.0,
+        "priority_score": 73.0,
+        "display_score": 73,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 26,
+      "owner_id": 4,
+      "title": "Networks exam revision",
+      "subject": "Computer Networks",
+      "deadline_offset_hours": 130.0,
+      "difficulty": "Very Hard",
+      "estimated_hours": 12,
+      "completed": false,
+      "created_offset_hours": -72.5,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 100,
+        "time_score": 100.0,
+        "priority_score": 75.0,
+        "display_score": 75,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 27,
+      "owner_id": 4,
+      "title": "Operating systems reading",
+      "subject": "Operating Systems",
+      "deadline_offset_hours": 250.0,
+      "difficulty": "Easy",
+      "estimated_hours": 2,
+      "completed": false,
+      "created_offset_hours": -48.5,
+      "expected": {
+        "deadline_score": 25,
+        "difficulty_score": 20,
+        "time_score": 20.0,
+        "priority_score": 22.5,
+        "display_score": 23,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "id": 28,
+      "owner_id": 4,
+      "title": "Security lab: password hashing",
+      "subject": "Software Security",
+      "deadline_offset_hours": -20.0,
+      "difficulty": "Medium",
+      "estimated_hours": 3,
+      "completed": true,
+      "created_offset_hours": -264.5,
+      "completed_offset_hours": -96.25,
+      "expected": null
+    },
+    {
+      "id": 29,
+      "owner_id": 4,
+      "title": "Peer review of Zahra's spec",
+      "subject": "Software Design",
+      "deadline_offset_hours": -2.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "completed": false,
+      "created_offset_hours": -48.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 58.0,
+        "display_score": 58,
+        "level": "Medium",
+        "overdue": true
+      }
+    },
+    {
+      "id": 30,
+      "owner_id": 5,
+      "title": "Data visualisation poster",
+      "subject": "Data Visualisation",
+      "deadline_offset_hours": 90.0,
+      "difficulty": "Medium",
+      "estimated_hours": 5,
+      "completed": false,
+      "created_offset_hours": -24.5,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 50,
+        "time_score": 50.0,
+        "priority_score": 50.0,
+        "display_score": 50,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "id": 31,
+      "owner_id": 5,
+      "title": "Research methods essay",
+      "subject": "Research Methods",
+      "deadline_offset_hours": 300.0,
+      "difficulty": "Hard",
+      "estimated_hours": 8,
+      "completed": false,
+      "created_offset_hours": -24.5,
+      "expected": {
+        "deadline_score": 25,
+        "difficulty_score": 80,
+        "time_score": 80.0,
+        "priority_score": 52.5,
+        "display_score": 53,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "id": 32,
+      "owner_id": 5,
+      "title": "Python exercises week 7",
+      "subject": "Programming",
+      "deadline_offset_hours": 10.0,
+      "difficulty": "Easy",
+      "estimated_hours": 2,
+      "completed": false,
+      "created_offset_hours": -24.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 20,
+        "time_score": 20.0,
+        "priority_score": 60.0,
+        "display_score": 60,
+        "level": "High",
+        "overdue": false
+      }
+    },
+    {
+      "id": 33,
+      "owner_id": 5,
+      "title": "Python exercises week 6",
+      "subject": "Programming",
+      "deadline_offset_hours": -150.0,
+      "difficulty": "Easy",
+      "estimated_hours": 2,
+      "completed": true,
+      "created_offset_hours": -240.5,
+      "completed_offset_hours": -72.25,
+      "expected": null
+    },
+    {
+      "id": 34,
+      "owner_id": 6,
+      "title": "Embedded systems project demo",
+      "subject": "Embedded Systems",
+      "deadline_offset_hours": 40.0,
+      "difficulty": "Very Hard",
+      "estimated_hours": 9,
+      "completed": false,
+      "created_offset_hours": -0.5,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 100,
+        "time_score": 90.0,
+        "priority_score": 85.5,
+        "display_score": 86,
+        "level": "Critical",
+        "overdue": false
+      }
+    },
+    {
+      "id": 35,
+      "owner_id": 6,
+      "title": "Signal processing homework",
+      "subject": "Signal Processing",
+      "deadline_offset_hours": -60.0,
+      "difficulty": "Hard",
+      "estimated_hours": 4,
+      "completed": false,
+      "created_offset_hours": -0.5,
+      "expected": {
+        "deadline_score": 100,
+        "difficulty_score": 80,
+        "time_score": 40.0,
+        "priority_score": 82.0,
+        "display_score": 82,
+        "level": "Critical",
+        "overdue": true
+      }
+    },
+    {
+      "id": 36,
+      "owner_id": 6,
+      "title": "Signal processing exam",
+      "subject": "Signal Processing",
+      "deadline_offset_hours": 500.0,
+      "difficulty": "Very Hard",
+      "estimated_hours": 15,
+      "completed": false,
+      "created_offset_hours": -0.5,
+      "expected": {
+        "deadline_score": 10,
+        "difficulty_score": 100,
+        "time_score": 100.0,
+        "priority_score": 55.0,
+        "display_score": 55,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "id": 37,
+      "owner_id": 6,
+      "title": "Lab safety quiz",
+      "subject": "Embedded Systems",
+      "deadline_offset_hours": -200.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "completed": true,
+      "created_offset_hours": -240.5,
+      "completed_offset_hours": -24.25,
+      "expected": null
+    },
+    {
+      "id": 38,
+      "owner_id": 7,
+      "title": "Intro to databases quiz",
+      "subject": "Databases",
+      "deadline_offset_hours": 120.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "completed": false,
+      "created_offset_hours": -0.5,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 33.0,
+        "display_score": 33,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "id": 39,
+      "owner_id": 7,
+      "title": "SQL practice set",
+      "subject": "Databases",
+      "deadline_offset_hours": -100.0,
+      "difficulty": "Medium",
+      "estimated_hours": 2,
+      "completed": true,
+      "created_offset_hours": -240.5,
+      "completed_offset_hours": -0.25,
+      "expected": null
+    }
+  ],
+  "edge_cases": [
+    {
+      "case": "exactly 24 h left",
+      "deadline_offset_hours": 24.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 45.5,
+        "display_score": 46,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "case": "60 h left (2.5 days)",
+      "deadline_offset_hours": 60.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 45.5,
+        "display_score": 46,
+        "level": "Medium",
+        "overdue": false
+      }
+    },
+    {
+      "case": "156 h left (6.5 days)",
+      "deadline_offset_hours": 156.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "expected": {
+        "deadline_score": 50,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 33.0,
+        "display_score": 33,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "case": "exactly 14 days left",
+      "deadline_offset_hours": 336.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "expected": {
+        "deadline_score": 25,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 20.5,
+        "display_score": 21,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "case": "exactly 15 days left",
+      "deadline_offset_hours": 360.0,
+      "difficulty": "Easy",
+      "estimated_hours": 1,
+      "expected": {
+        "deadline_score": 10,
+        "difficulty_score": 20,
+        "time_score": 10.0,
+        "priority_score": 13.0,
+        "display_score": 13,
+        "level": "Low",
+        "overdue": false
+      }
+    },
+    {
+      "case": "exact score 79.5 shows 80",
+      "deadline_offset_hours": 30.0,
+      "difficulty": "Very Hard",
+      "estimated_hours": 6,
+      "expected": {
+        "deadline_score": 75,
+        "difficulty_score": 100,
+        "time_score": 60.0,
+        "priority_score": 79.5,
+        "display_score": 80,
+        "level": "Critical",
+        "overdue": false
+      }
+    }
+  ],
+  "summary": {
+    "users": 7,
+    "tasks": 39,
+    "open": 30,
+    "completed": 9,
+    "overdue": 3,
+    "open_by_level": {
+      "Critical": 4,
+      "High": 11,
+      "Medium": 9,
+      "Low": 6
+    }
+  }
+}

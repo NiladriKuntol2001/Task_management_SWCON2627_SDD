@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: StudyFlow API (SDD v1)
+  version: 1.0.0
+  description: >
+    Contract for the Smart Student Task Manager. All endpoints except register,
+    login and health need `Authorization: Bearer <token>`. Errors always use the
+    Error schema. Requirement IDs refer to spec.md.
+servers:
+  - url: /api
+security:
+  - bearer: []
+paths:
+  /health:
+    get:
+      security: []
+      summary: Liveness check
+      responses: { '200': { description: OK } }
+
+  /auth/register:
+    post:
+      security: []
+      summary: Create a student account and sign in (FR-01)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/RegisterIn' } } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Session' } } } }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+  /auth/login:
+    post:
+      security: []
+      summary: Sign in (FR-02). Same 401 message for unknown email and wrong password.
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/LoginIn' } } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Session' } } } }
+        '401': { $ref: '#/components/responses/Error' }
+        '403': { description: Account deactivated, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+  /auth/logout:
+    post:
+      summary: Sign out; the token is revoked (FR-03)
+      responses: { '204': { description: Signed out } }
+
+  /me:
+    get:
+      summary: Current user's profile with task counts (FR-22)
+      responses: { '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Profile' } } } } }
+  /me/email:
+    patch:
+      summary: Change email (FR-23)
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [new_email, current_password], properties: { new_email: { type: string }, current_password: { type: string } } } } } }
+      responses:
+        '200': { description: Updated profile, content: { application/json: { schema: { $ref: '#/components/schemas/Profile' } } } }
+        '403': { description: Main admin's email is fixed, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { description: Invalid or unchanged email, or wrong current password, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+  /me/password:
+    patch:
+      summary: Change password (FR-24)
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [current_password, new_password, confirm_password], properties: { current_password: { type: string }, new_password: { type: string }, confirm_password: { type: string } } } } } }
+      responses:
+        '204': { description: Changed }
+        '422': { description: Rule broken or wrong current password, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+
+  /tasks:
+    get:
+      summary: List own tasks (FR-15..18)
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [active, completed, all], default: active } }
+        - { name: view, in: query, schema: { type: string, enum: [upcoming, overdue] } }
+        - { name: subject, in: query, schema: { type: string } }
+        - { name: q, in: query, schema: { type: string } }
+        - { name: sort, in: query, schema: { type: string, enum: [priority, deadline], default: priority } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { type: object, properties: { tasks: { type: array, items: { $ref: '#/components/schemas/Task' } }, subjects: { type: array, items: { type: string } } } } } } }
+    post:
+      summary: Create a task (FR-04, FR-05, FR-10)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/TaskIn' } } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/Task' } } } }
+        '422': { $ref: '#/components/responses/Error' }
+  /tasks/{id}:
+    parameters: [ { name: id, in: path, required: true, schema: { type: integer } } ]
+    get:
+      summary: Task details (FR-09). 404 if missing or not owned (FR-21).
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Task' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+    put:
+      summary: Edit a task (FR-06, FR-13)
+      requestBody: { required: true, content: { application/json: { schema: { $ref: '#/components/schemas/TaskIn' } } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Task' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+    delete:
+      summary: Delete a task (FR-07)
+      responses:
+        '204': { description: Deleted }
+        '404': { $ref: '#/components/responses/Error' }
+  /tasks/{id}/complete:
+    parameters: [ { name: id, in: path, required: true, schema: { type: integer } } ]
+    patch:
+      summary: Mark complete or incomplete (FR-08)
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [completed], properties: { completed: { type: boolean } } } } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Task' } } } }
+        '404': { $ref: '#/components/responses/Error' }
+  /priority/preview:
+    post:
+      summary: Score a task without saving it (FR-35)
+      requestBody: { required: true, content: { application/json: { schema: { type: object, required: [deadline, difficulty, estimated_hours], properties: { deadline: { type: string, format: date-time }, difficulty: { $ref: '#/components/schemas/Difficulty' }, estimated_hours: { type: number } } } } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/Priority' } } } }
+        '422': { $ref: '#/components/responses/Error' }
+
+  /dashboard:
+    get:
+      summary: Student dashboard and recommendation (FR-19, FR-20)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  counts: { type: object, properties: { incomplete: { type: integer }, completed: { type: integer }, high_priority: { type: integer }, critical: { type: integer }, overdue: { type: integer }, due_this_week: { type: integer }, completion_percent: { type: integer } } }
+                  mix: { type: object, properties: { Critical: { type: integer }, High: { type: integer }, Medium: { type: integer }, Low: { type: integer } } }
+                  recommendation: { allOf: [ { $ref: '#/components/schemas/Task' } ], nullable: true }
+                  upcoming: { type: array, items: { $ref: '#/components/schemas/Task' } }
+                  overdue: { type: array, items: { $ref: '#/components/schemas/Task' } }
+
+  /admin/overview:
+    get:
+      summary: Platform statistics (FR-27). Admin only (FR-32).
+      responses:
+        '200': { description: OK }
+        '403': { $ref: '#/components/responses/Error' }
+  /admin/users:
+    get:
+      summary: List and search users (FR-28). A numeric q (or #n) matches the ID exactly.
+      parameters: [ { name: q, in: query, schema: { type: string } } ]
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { type: object, properties: { users: { type: array, items: { $ref: '#/components/schemas/AdminUser' } } } } } } }
+        '403': { $ref: '#/components/responses/Error' }
+    post:
+      summary: Create a user (FR-29)
+      requestBody: { required: true, content: { application/json: { schema: { allOf: [ { $ref: '#/components/schemas/RegisterIn' } ], properties: { role: { type: string, enum: [student, admin] } } } } } }
+      responses:
+        '201': { description: Created, content: { application/json: { schema: { $ref: '#/components/schemas/AdminUser' } } } }
+        '409': { $ref: '#/components/responses/Error' }
+        '422': { $ref: '#/components/responses/Error' }
+  /admin/users/{id}:
+    parameters: [ { name: id, in: path, required: true, schema: { type: integer } } ]
+    patch:
+      summary: Activate/deactivate or change role (FR-30). Main admin and self protected.
+      requestBody: { required: true, content: { application/json: { schema: { type: object, properties: { is_active: { type: boolean }, role: { type: string, enum: [student, admin] } } } } } }
+      responses:
+        '200': { description: OK, content: { application/json: { schema: { $ref: '#/components/schemas/AdminUser' } } } }
+        '403': { $ref: '#/components/responses/Error' }
+        '404': { $ref: '#/components/responses/Error' }
+  /admin/tasks:
+    get:
+      summary: All open tasks in priority order (FR-31)
+      parameters:
+        - { name: level, in: query, schema: { type: string, enum: [Critical, High, Medium, Low] } }
+        - { name: owner_id, in: query, schema: { type: integer } }
+      responses:
+        '200': { description: OK }
+        '403': { $ref: '#/components/responses/Error' }
+
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+  responses:
+    Error:
+      description: Error
+      content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message: { type: string }
+            fields: { type: object, additionalProperties: { type: string } }
+    Difficulty: { type: string, enum: [Easy, Medium, Hard, Very Hard] }
+    RegisterIn:
+      type: object
+      required: [name, email, password]
+      properties: { name: { type: string, maxLength: 100 }, email: { type: string }, password: { type: string, minLength: 8 } }
+    LoginIn:
+      type: object
+      required: [email, password]
+      properties: { email: { type: string }, password: { type: string } }
+    User:
+      type: object
+      properties: { id: { type: integer }, name: { type: string }, email: { type: string }, role: { type: string }, is_active: { type: boolean }, created_at: { type: string, format: date-time } }
+    Profile:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties: { task_count: { type: integer }, completed_count: { type: integer }, is_main_admin: { type: boolean } }
+    AdminUser:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          properties: { open: { type: integer }, completed: { type: integer }, overdue: { type: integer }, is_main_admin: { type: boolean } }
+    Session:
+      type: object
+      properties: { token: { type: string }, user: { $ref: '#/components/schemas/User' } }
+    TaskIn:
+      type: object
+      required: [title, subject, deadline, difficulty, estimated_hours]
+      properties:
+        title: { type: string, maxLength: 200 }
+        subject: { type: string, maxLength: 100 }
+        deadline: { type: string, format: date-time, description: ISO-8601 with offset; stored as UTC }
+        difficulty: { $ref: '#/components/schemas/Difficulty' }
+        estimated_hours: { type: number, exclusiveMinimum: true, minimum: 0, maximum: 1000 }
+    Priority:
+      type: object
+      properties:
+        score: { type: integer, description: shown score, exact rounded half up }
+        exact: { type: number }
+        level: { type: string, enum: [Critical, High, Medium, Low] }
+        days_left: { type: integer, description: floor(hours/24); negative when overdue }
+        overdue: { type: boolean }
+        deadline_score: { type: integer }
+        difficulty_score: { type: integer }
+        time_score: { type: number }
+        deadline_part: { type: number }
+        difficulty_part: { type: number }
+        time_part: { type: number }
+    Task:
+      type: object
+      properties:
+        id: { type: integer }
+        owner_id: { type: integer }
+        title: { type: string }
+        subject: { type: string }
+        deadline: { type: string, format: date-time }
+        difficulty: { $ref: '#/components/schemas/Difficulty' }
+        estimated_hours: { type: number }
+        completed: { type: boolean }
+        completed_at: { type: string, format: date-time, nullable: true }
+        created_at: { type: string, format: date-time }
+        overdue: { type: boolean }
+        priority: { allOf: [ { $ref: '#/components/schemas/Priority' } ], nullable: true }

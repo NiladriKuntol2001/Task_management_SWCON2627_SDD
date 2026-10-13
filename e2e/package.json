@@ -1,0 +1,11 @@
+{
+  "name": "studyflow-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "e2e": "node e2e.mjs http://127.0.0.1:8765"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
+  }
+}
