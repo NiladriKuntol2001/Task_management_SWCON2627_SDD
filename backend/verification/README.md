@@ -1,6 +1,6 @@
 # Independent verification of the SDD build (Member 3)
 
-This folder holds the verification suite written Khadija Bassoum from the team specification and decisions D1–D4. It is the same suite that was run on the Vibe Coding build: same test cases, same IDs (TC-AUTH, TC-TASK, TC-PRI, TC-FLT, TC-SORT, TC-UPC, TC-OVD, TC-DASH, TC-REC, TC-SEC, TC-NFR) and the same hand-calculated expected values. Only the calls were adapted to this build's interface.
+This folder holds the verification suite written by Khadija Bassoum from the team specification and decisions D1–D4. It is the same suite that was run on the Vibe Coding build: same test cases, same IDs (TC-AUTH, TC-TASK, TC-PRI, TC-FLT, TC-SORT, TC-UPC, TC-OVD, TC-DASH, TC-REC, TC-SEC, TC-NFR) and the same hand-calculated expected values. Only the calls were adapted to this build's interface.
 
 ## Run
 
