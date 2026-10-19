@@ -1,0 +1,69 @@
+# Continuous verification of the SDD build (Member 3).
+# Runs the team's own tests and the independent verification suite on every push and pull request.
+
+name: Verification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Tests and coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt pytest pytest-cov httpx
+      - name: Run all tests (developer tests + independent verification suite)
+        run: >
+          pytest backend/tests backend/verification -v
+          --cov=backend/app --cov-report=term-missing --cov-report=xml
+          --cov-fail-under=80
+          --junitxml=test-results.xml
+      - name: Requirement-level summary
+        if: always()
+        run: |
+          {
+            echo "### Verification results"
+            echo ""
+            echo "| Area | Test runs |"
+            echo "| --- | --- |"
+            for area in AUTH TASK PRI FLT SORT UPC OVD DASH REC SEC NFR; do
+              n=$(grep -o "test_TC_${area}_" test-results.xml | wc -l || true)
+              echo "| TC-${area} | ${n} |"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            test-results.xml
+            coverage.xml
+
+  security-scan:
+    name: Security scan (TC-SEC-10)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Static analysis of the application code
+        # B608 skipped after manual review: users_repo.py builds the column list from a
+        # module constant, never from user input (audit finding SDD-A-03).
+        run: |
+          pip install bandit
+          bandit -r backend/app -ll --skip B608
+      - name: Known-vulnerable dependencies
+        run: |
+          pip install pip-audit
+          pip-audit -r backend/requirements.txt
