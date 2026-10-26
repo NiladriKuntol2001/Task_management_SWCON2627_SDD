@@ -146,7 +146,7 @@ class Organise(ApiTestCase):
         self.assertEqual(self.titles("?sort=deadline"), ["Late quiz", "Alpha essay", "Beta lab"])
 
     def test_sort_by_priority(self):
-        # Beta lab: 25*.5 + 100*.3 + 100*.2 = 62.5 -> 63; Late quiz: 50+6+2 = 58; Alpha: 37.5+6+2 = 45.5 -> 46
+        # Beta lab: 25*.5 + 100*.3 + 100*.2 = 62.5 -> 63; Late quiz: 50+6+2 = 58; Alpha (49 h -> 3 days, D1): 25+6+2 = 33
         self.assertEqual(self.titles("?sort=priority"), ["Beta lab", "Late quiz", "Alpha essay"])
 
     def test_upcoming_is_next_7_days_not_overdue(self):

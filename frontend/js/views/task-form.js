@@ -88,7 +88,8 @@ export async function renderTaskForm({ root, id }) {
         rows.t.textContent = p.time_part.toFixed(1);
         rows.exact.textContent = Number(p.exact).toFixed(1);
         previewNote.textContent = p.overdue ? 'This deadline has already passed, so the task will be overdue.'
-          : `${p.days_left} whole day${p.days_left === 1 ? '' : 's'} left → deadline score ${p.deadline_score}.`;
+          : p.days_left === 0 ? `Less than 24 hours left → deadline score ${p.deadline_score}.`
+            : `Counted as ${p.days_left} day${p.days_left === 1 ? '' : 's'} (time left rounded up) → deadline score ${p.deadline_score}.`;
       } catch (e) {
         scoreEl.textContent = '–';
         clear(levelEl, 'Fill in deadline and hours');

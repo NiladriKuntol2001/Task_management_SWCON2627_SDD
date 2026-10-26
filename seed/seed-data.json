@@ -1,6 +1,6 @@
 {
   "about": "Sample data for StudyFlow SDD v1. Times are hour offsets from the moment the data is loaded. 'expected' is the priority spec.md requires, computed independently; use it as a test oracle.",
-  "formula": "score = deadline*0.50 + difficulty*0.30 + min(hours*10,100)*0.20; deadline band from floor(hours_left/24); level from the score rounded half up",
+  "formula": "score = deadline*0.50 + difficulty*0.30 + min(hours*10,100)*0.20; under 24 h scores 100, otherwise deadline band from ceil(hours_left/24) (D1); level from the score rounded half up",
   "users": [
     {
       "id": 1,
@@ -807,12 +807,12 @@
       "difficulty": "Easy",
       "estimated_hours": 1,
       "expected": {
-        "deadline_score": 75,
+        "deadline_score": 50,
         "difficulty_score": 20,
         "time_score": 10.0,
-        "priority_score": 45.5,
-        "display_score": 46,
-        "level": "Medium",
+        "priority_score": 33.0,
+        "display_score": 33,
+        "level": "Low",
         "overdue": false
       }
     },
@@ -822,11 +822,11 @@
       "difficulty": "Easy",
       "estimated_hours": 1,
       "expected": {
-        "deadline_score": 50,
+        "deadline_score": 25,
         "difficulty_score": 20,
         "time_score": 10.0,
-        "priority_score": 33.0,
-        "display_score": 33,
+        "priority_score": 20.5,
+        "display_score": 21,
         "level": "Low",
         "overdue": false
       }

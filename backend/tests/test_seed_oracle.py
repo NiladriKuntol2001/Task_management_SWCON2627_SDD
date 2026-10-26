@@ -38,9 +38,13 @@ class SeedOracle(ApiTestCase):
         s = self.login("niladri@student.test")
         from backend.tests.support import in_hours
         for case in DATA["edge_cases"]:
-            # +1 minute: the server reads the clock a moment after we do, so an "exactly 24 h"
-            # deadline would arrive as 23.9999 h. Exact boundaries are unit-tested in test_priority.
-            _, p = s.post("/api/priority/preview", {"deadline": in_hours(case["deadline_offset_hours"] + 1 / 60),
+            # The server reads the clock a moment after we do, so a deadline exactly on a day
+            # boundary arrives a fraction early. With time rounded up (D1), k days minus a minute
+            # is still k days for k >= 2; only "exactly 24 h" needs a minute added (else < 24 h).
+            # Exact boundaries are unit-tested with a fixed clock in test_priority.
+            offset = case["deadline_offset_hours"]
+            offset += 1 / 60 if offset == 24 else -1 / 60
+            _, p = s.post("/api/priority/preview", {"deadline": in_hours(offset),
                                                     "difficulty": case["difficulty"],
                                                     "estimated_hours": case["estimated_hours"]})
             want = case["expected"]

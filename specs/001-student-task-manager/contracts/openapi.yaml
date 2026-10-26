@@ -222,10 +222,10 @@ components:
     Priority:
       type: object
       properties:
-        score: { type: integer, description: shown score, exact rounded half up }
+        score: { type: integer, description: 'shown score, exact rounded half up; display only (ordering uses exact, FR-14)' }
         exact: { type: number }
         level: { type: string, enum: [Critical, High, Medium, Low] }
-        days_left: { type: integer, description: floor(hours/24); negative when overdue }
+        days_left: { type: integer, description: 'days counted for the band: 0 under 24 h, otherwise ceil(hours/24) (D1); negative when overdue' }
         overdue: { type: boolean }
         deadline_score: { type: integer }
         difficulty_score: { type: integer }

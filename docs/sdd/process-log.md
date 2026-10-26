@@ -84,3 +84,29 @@ step, what came out, and what went wrong. Newest entries at the bottom.
   ready in ≈0.8 s including sign-in (NFR-02).
 - Open: NFR-14 human review (`docs/sdd/review-log.md`); an automated accessibility
   scan was not run.
+
+## 2026-10-26 — GitHub issues #1 and #2 (found by Khadija's independent verification)
+
+Both issues came from `/speckit.clarify` answers of 13 Oct that contradicted team
+decisions Zahra (specification owner) had already recorded on 10 Oct. Fixed spec first,
+then code and tests; nothing else changed in behaviour.
+
+| Issue | Was | Now |
+|---|---|---|
+| #1 SDD-01, FR-11, decision D1 | whole days counted *down*: 2.5 days → 75, 6.5 days → 50, 14 days + 1 min → 25 | time left rounded *up*: 2.5 days → 3 → 50, 6.5 → 7 → 25, 14 days + 1 min → 15 → 10; under 24 h still 100 |
+| #2 SDD-02, FR-14, decision D2 | ties judged on the shown whole-number score, so 77.5 (due sooner) ranked above 78.4 | ordering uses the exact score; the deadline only breaks a tie between equal exact scores. The whole-number score is still what the UI shows |
+
+Changed: `spec.md` (priority table, FR-14, edge cases, clarifications), `contracts/openapi.yaml`
+(descriptions), `backend/app/priority.py`, explanation texts in three frontend views,
+`seed/generate_seed.py` (oracle), developer tests, and the two strict-xfail markers in
+`backend/verification/` (the defects they tracked are fixed).
+
+Evidence:
+- Before updating tests, 8 developer tests failed — exactly the old round-down and
+  shown-score tie expectations — and Khadija's 9 strict-xfail cases reported XPASS,
+  i.e. her suite confirmed both fixes independently.
+- After: developer tests 86/86; Khadija's suite 174/174 with no markers; CI command
+  (`pytest backend/tests backend/verification`) 260 passed; browser checks 66/66 on fresh
+  sample data. API response times unchanged (about 2 ms for dashboard and task list,
+  same as before the change).
+- No sample task changed score or level; only the two in-between edge cases did.

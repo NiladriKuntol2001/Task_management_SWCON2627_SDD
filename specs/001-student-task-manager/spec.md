@@ -77,10 +77,11 @@ and the recommendation against the formula.
 
 1. **Given** a task due in 14.5 hours, Hard, 8 hours, **Then** its score is 90, Critical
    (deadline 100×0.5 + 80×0.3 + 80×0.2).
-2. **Given** a task due in 60 hours (2.5 days), **Then** its deadline score is 75
-   (2 whole days left).
-3. **Given** two incomplete tasks that both show 75, **Then** the one with the earlier
-   deadline is listed first.
+2. **Given** a task due in 60 hours (2.5 days), **Then** its deadline score is 50
+   (time left rounded up to 3 days, team decision D1).
+3. **Given** two incomplete tasks with the same exact score (75), **Then** the one with
+   the earlier deadline is listed first. A higher exact score always comes first, even
+   when both show the same whole number (78.4 before 77.5).
 4. **Given** a task whose deadline, difficulty or hours change, **Then** its score and
    level are recalculated immediately.
 5. **Given** incomplete tasks, **Then** the recommendation is the first task in priority
@@ -177,9 +178,9 @@ The interface works in light and dark mode and on phone, tablet and desktop scre
 
 ### Edge Cases
 
-- Deadline exactly 24 h away → 1 whole day → deadline score 75.
-- Deadline 60 h away → 2 whole days → 75. Deadline 156 h away → 6 days → 50.
-- Deadline exactly 14 days away → 14 days → 25; 15 days → 10.
+- Deadline 23 h 59 min away → less than 24 hours → 100. Exactly 24 h → 1 day → 75.
+- Deadline 60 h away → rounded up to 3 days → 50. 156 h → 7 days → 25.
+- Deadline exactly 14 days away → 25; 14 days and 1 minute → rounded up to 15 → 10.
 - Score 79.5 → shown as 80 → Critical (level follows the shown score).
 - Estimated hours 12 → time score capped at 100.
 - Email entered with capitals or spaces → trimmed and compared case-insensitively.
@@ -221,8 +222,9 @@ IDs FR-01–FR-21 keep the numbering of the team's official requirements documen
 - **FR-12**: The system MUST classify each score as Critical, High, Medium or Low.
 - **FR-13**: Scores MUST reflect the current deadline, difficulty and hours, and the
   current time, whenever they are shown.
-- **FR-14**: Priority order MUST be: shown score highest first; equal shown scores →
-  earlier deadline first; still equal → earlier created first.
+- **FR-14**: Priority order MUST be: exact score highest first; equal exact scores →
+  earlier deadline first; still equal → earlier created first (team decision D2).
+  The shown whole-number score is for display only.
 
 **Organisation**
 
@@ -313,16 +315,18 @@ IDs FR-01–FR-21 keep the numbering of the team's official requirements documen
 
 `Priority score = Deadline score × 0.50 + Difficulty score × 0.30 + Time score × 0.20`
 
-**Deadline score** — from whole days left, `days = floor(hours until deadline ÷ 24)`:
+**Deadline score** — less than 24 hours left (or overdue) scores 100; otherwise the time
+left is rounded **up** to whole days, `days = ceil(hours until deadline ÷ 24)`
+(team decision D1, issue #1):
 
 | Situation | Score |
 |---|---|
 | Deadline passed (overdue) | 100 |
-| 0 whole days (less than 24 hours) | 100 |
-| 1–2 whole days | 75 |
-| 3–6 whole days | 50 |
-| 7–14 whole days | 25 |
-| 15 or more whole days | 10 |
+| Less than 24 hours | 100 |
+| 1–2 days | 75 |
+| 3–6 days | 50 |
+| 7–14 days | 25 |
+| More than 14 days (15 or more after rounding up) | 10 |
 
 **Difficulty score**: Easy 20, Medium 50, Hard 80, Very Hard 100.
 
@@ -360,8 +364,10 @@ Completed tasks have no score and show "Done".
 ### Session 2026-10-13 (decided by the team — Niladri)
 
 - Q: The deadline table jumps from "1–2 days" to "3–6 days" (and 6 → 7, 14 → more than
-  14). Which band does 2.5 days or 6.5 days fall in? → A: Count whole days left,
-  `floor(hours ÷ 24)`. 2.5 days → 2 → 75; 6.5 days → 6 → 50; exactly 14 days → 25.
+  14). Which band does 2.5 days or 6.5 days fall in? → A (corrected 2026-10-26, issue #1):
+  Zahra's team decision D1 of 10 Oct applies — round the time left **up** to whole
+  days: 2.5 days → 3 → 50; 6.5 days → 7 → 25; 14 days and a minute → 15 → 10. The first
+  answer (count down, given on 13 Oct) contradicted D1, which had not been checked.
 - Q: Is the level decided from the shown (rounded) score or the exact score?
   → A: From the shown score, rounded half up. 79.5 → 80 → Critical.
 - Q: How far ahead does "Upcoming" look? → A: The next 7 days.
@@ -370,8 +376,9 @@ Completed tasks have no score and show "Done".
 
 - Q: Is a completed task past its deadline overdue? → A: No. FR-18 says incomplete
   tasks only.
-- Q: What counts as a tie in FR-14? → A: Equal shown score; then earlier deadline;
-  then earlier creation.
+- Q: What counts as a tie in FR-14? → A (corrected 2026-10-26, issue #2, team decision
+  D2): equal **exact** score; then earlier deadline; then earlier creation. The first
+  answer (equal shown score) let 77.5 rank above 78.4.
 - Q: May a deadline be in the past when a task is created? → A: Yes; it is
   immediately overdue (students log late work too).
 - Q: Can estimated hours be a decimal? → A: Yes, greater than 0 and at most 1000.

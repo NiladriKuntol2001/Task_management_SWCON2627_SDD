@@ -8,10 +8,8 @@ This build exposes one function, priority.score(), which returns the exact score
 ("exact"), a whole-number score for display ("score") and the level. The oracle checks
 the exact score, so hand values such as 77.5 are compared without rounding.
 
-Known deviation (strict xfail, see the defect log):
-  SDD-01  This build counts whole days left by rounding DOWN (Niladri's clarification of
-          13 Oct). Team decision D1 rounds UP. The two readings disagree for deadlines
-          between 2 and 3 days, 6 and 7 days, and 14 and 15 days away.
+Former deviation SDD-01 (days left rounded down, GitHub issue #1) was fixed on 26 Oct 2026:
+the build now rounds up as team decision D1 says, so its strict-xfail markers were removed.
 """
 from datetime import datetime, timedelta, timezone
 
@@ -20,7 +18,6 @@ import pytest
 from backend.app import priority
 
 NOW = datetime(2026, 10, 1, 12, 0, tzinfo=timezone.utc)
-SDD_01 = pytest.mark.xfail(strict=True, reason="SDD-01: days left rounded down, team decision D1 rounds up")
 
 
 def deadline_score(deadline, now=NOW):
@@ -55,7 +52,7 @@ def test_TC_PRI_01_deadline_score_inside_each_band(delta, expected):
         (timedelta(hours=144), 50),               # exactly 6 days
         (timedelta(hours=168), 25),               # exactly 7 days
         (timedelta(hours=336), 25),               # exactly 14 days
-        pytest.param(timedelta(hours=336, minutes=1), 10, marks=SDD_01),  # "More than 14 days"
+        (timedelta(hours=336, minutes=1), 10),  # "More than 14 days"
     ],
 )
 def test_TC_PRI_02_deadline_band_edges(delta, expected):
@@ -63,7 +60,6 @@ def test_TC_PRI_02_deadline_band_edges(delta, expected):
 
 
 # --- TC-PRI-02g: times between the spec's bands (team decision D1) -----------
-@SDD_01
 @pytest.mark.parametrize(
     "delta, expected",
     [(timedelta(hours=49), 50), (timedelta(hours=60), 50), (timedelta(hours=71), 50),

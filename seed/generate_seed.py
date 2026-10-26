@@ -15,12 +15,11 @@ DIFFICULTY = {"Easy": 20, "Medium": 50, "Hard": 80, "Very Hard": 100}
 
 
 def deadline_points(hours_left: float) -> int:
-    """spec.md table + clarification: whole days = floor(hours / 24)."""
-    if hours_left < 0:
+    """spec.md table + team decision D1: under 24 h (or overdue) scores 100; otherwise
+    the time left is rounded UP to whole days."""
+    if hours_left < 24:
         return 100
-    days = int(hours_left // 24)
-    if days == 0:
-        return 100
+    days = -(-hours_left // 24)                      # ceiling without math.ceil
     if days <= 2:
         return 75
     if days <= 6:
@@ -150,7 +149,7 @@ def build() -> dict:
                   "loaded. 'expected' is the priority spec.md requires, computed independently; use it "
                   "as a test oracle."),
         "formula": "score = deadline*0.50 + difficulty*0.30 + min(hours*10,100)*0.20; "
-                   "deadline band from floor(hours_left/24); level from the score rounded half up",
+                   "under 24 h scores 100, otherwise deadline band from ceil(hours_left/24) (D1); level from the score rounded half up",
         "users": USERS,
         "tasks": tasks,
         "edge_cases": EDGE_CASES,

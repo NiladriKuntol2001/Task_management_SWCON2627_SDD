@@ -17,10 +17,10 @@ Browser checks: `node e2e/e2e.mjs` on freshly seeded data (66 checks, all pass; 
 | FR-08 Complete / reopen | `routes/tasks.complete_task` | `test_tasks.EditCompleteDelete.test_complete_and_reopen`; E2E "FR-08" | Pass |
 | FR-09 View details | `routes/tasks.get_task`, `views/task-detail.js` | `test_tasks.CreateAndView.test_view_details_has_breakdown`; E2E "FR-09" | Pass |
 | FR-10 Validation | `validation.py` | `test_tasks.Validation.*` (8 tests); E2E "FR-10" | Pass |
-| FR-11 Score | `priority.score` | `test_priority.Components.*`; `test_seed_oracle` (30 tasks) | Pass |
+| FR-11 Score (D1, issue #1) | `priority.score`, `priority.deadline_score` | `test_priority.DeadlineBands.*`; `test_seed_oracle` (30 tasks); Khadija TC-PRI-01/02/02g | Pass |
 | FR-12 Levels | `priority.classify` | `test_priority.RoundingAndLevels.*` | Pass |
 | FR-13 Recalculate | scores computed on read (`tasks_repo.to_dict`) | `test_tasks…test_edit_recalculates_priority` | Pass |
-| FR-14 Tie-break | `priority.sort_key` | `test_priority.Ordering.*`; `test_dashboard…tie_breaks_on_deadline` | Pass |
+| FR-14 Tie-break (D2, issue #2) | `priority.sort_key` (exact score) | `test_priority.Ordering.*`; `test_dashboard…tie_breaks_on_deadline`; Khadija TC-SORT-05 | Pass |
 | FR-15 Filter / search | `routes/tasks.list_tasks`, `views/tasks.js` | `test_tasks.Organise.test_filter_*`, `test_search_title`; E2E "FR-15" | Pass |
 | FR-16 Sort | `tasks_repo.sort_by_*` | `test_tasks.Organise.test_sort_*`; E2E "FR-16" | Pass |
 | FR-17 Upcoming (7 days) | `recommendation.upcoming` | `test_tasks.Organise.test_upcoming…`; E2E "FR-17" | Pass |

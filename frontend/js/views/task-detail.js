@@ -65,7 +65,8 @@ export async function renderTaskDetail({ root, id }) {
                 ring(p.score, p.level),
                 h('p', { class: 'muted', style: { flex: '1 1 160px' } },
                   p.overdue ? 'The deadline has passed, so the deadline part counts in full.'
-                    : `${p.days_left} whole day${p.days_left === 1 ? '' : 's'} left, so the deadline score is ${p.deadline_score}.`)),
+                    : p.days_left === 0 ? `Less than 24 hours left, so the deadline score is ${p.deadline_score}.`
+                      : `The time left counts as ${p.days_left} day${p.days_left === 1 ? '' : 's'} (rounded up), so the deadline score is ${p.deadline_score}.`)),
               h('div', { class: 'breakdown' },
                 h('div', {}, h('span', {}, 'Deadline ', h('span', { class: 'muted' }, `${p.deadline_score} × 0.50`)), h('span', { class: 'mono' }, p.deadline_part.toFixed(1))),
                 h('div', {}, h('span', {}, 'Difficulty ', h('span', { class: 'muted' }, `${p.difficulty_score} × 0.30`)), h('span', { class: 'mono' }, p.difficulty_part.toFixed(1))),

@@ -416,7 +416,6 @@ def test_TC_REC_05_overdue_tasks_can_be_recommended(client, auth_headers):
     assert dashboard(client, auth_headers)["recommendation"]["title"] == "late"
 
 
-@pytest.mark.xfail(strict=True, reason="SDD-02: ties are decided on the rounded score, so a higher exact score can rank lower")
 def test_TC_SORT_05_higher_exact_score_ranks_first_even_when_rounded_scores_match(client, auth_headers):
     """Added after reading this build's tie rule (FR-14, D2). Hand-calculated:
     X: 36 h, Hard, 8 h    -> 37.5 + 24 + 16   = 77.5 (shown 78)

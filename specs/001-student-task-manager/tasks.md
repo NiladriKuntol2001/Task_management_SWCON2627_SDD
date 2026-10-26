@@ -95,3 +95,9 @@ code they test inside each story.
 
 Setup → Foundational → US3 (priority) → US1 → US2 → US4/US5 (parallel) → US6/US7
 (parallel) → sample data → polish. Frontend views follow their backend story.
+
+## Phase 12: GitHub issues from independent verification (2026-10-26)
+
+- [x] T043 [US3] Issue #1 (SDD-01): deadline band from time left rounded up (D1) — `spec.md`, `priority.py`, tests, seed oracle [FR-11]
+- [x] T044 [US3] Issue #2 (SDD-02): order by exact score, deadline only on equal exact scores (D2) — `spec.md`, `priority.py`, tests [FR-14, FR-20]
+- [x] T045 Remove the strict-xfail markers for SDD-01/SDD-02 in `backend/verification/`; run developer tests, verification suite and browser checks

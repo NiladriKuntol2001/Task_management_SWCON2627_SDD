@@ -111,7 +111,7 @@ export async function renderTasks({ root, preset, params }) {
     conf.note ? h('p', { class: 'muted' }, conf.note) : null,
     h('div', { class: 'toolbar' }, isList ? statusSeg : null, searchForm, conf.query.view ? null : sortBtn, chips),
     listBox,
-    isList ? h('p', { class: 'small muted' }, 'Ties on score are broken by the earlier deadline. Scores update whenever deadline, difficulty or hours change.') : null);
+    isList ? h('p', { class: 'small muted' }, 'Equal scores are ordered by the earlier deadline. Scores update whenever deadline, difficulty or hours change.') : null);
   await load();
 }
 

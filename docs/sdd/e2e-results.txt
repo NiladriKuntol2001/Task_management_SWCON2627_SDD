@@ -25,7 +25,7 @@ PASS  FR-15 completed view lists the task
 PASS  FR-33 theme toggles and persists after reload  (light -> dark)
 PASS  FR-03 sign out returns to sign-in
 PASS  no JavaScript errors (new student journey)
-PASS  NFR-02 dashboard ready in under 2 s  (769 ms incl. sign-in)
+PASS  NFR-02 dashboard ready in under 2 s  (384 ms incl. sign-in)
 PASS  US5 sample dashboard counts 13 / 4 / 6 / 1  (13,4,6,1)
 PASS  FR-20 recommends STRIDE threat model (90)
 PASS  FR-34 dashboard has no horizontal scroll at 1280px
@@ -65,4 +65,4 @@ PASS  FR-21 another student's task shows "Task not found"
 PASS  FR-32 student is kept out of the admin panel
 PASS  FR-34 sign-in has no horizontal scroll at 390px
 
-66/66 checks passed. Screenshots: /home/claude/task_management_swcon2627_sdd/e2e/screenshots
+66/66 checks passed. Screenshots: /tmp/claude-0/-home-claude/77845ac7-d316-5fab-8aba-7513158241d2/scratchpad/fix2/e2e/screenshots

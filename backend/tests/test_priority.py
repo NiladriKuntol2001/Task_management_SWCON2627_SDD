@@ -1,4 +1,8 @@
-"""US3 — priority engine (FR-11..FR-14). Written from spec.md before priority.py."""
+"""US3 — priority engine (FR-11..FR-14). Written from spec.md before priority.py.
+
+2026-10-26 (GitHub issues #1 and #2): band tests updated to team decision D1 (time left
+rounded UP to whole days) and ordering tests to D2 (ties only on equal exact score).
+"""
 import unittest
 from datetime import datetime, timedelta, timezone
 
@@ -24,23 +28,25 @@ class DeadlineBands(unittest.TestCase):
         self.check(0, 100)
         self.check(23.99, 100)
 
-    def test_one_to_two_whole_days_is_75(self):
-        self.check(24, 75)          # clarified: exactly 24 h = 1 whole day
-        self.check(47.9, 75)
-        self.check(60, 75)          # clarified: 2.5 days -> 2 whole days
-        self.check(71.99, 75)
+    def test_one_to_two_days_is_75(self):
+        self.check(24, 75)          # exactly 1 day
+        self.check(36, 75)
+        self.check(48, 75)          # exactly 2 days
 
-    def test_three_to_six_whole_days_is_50(self):
+    def test_three_to_six_days_is_50(self):
+        self.check(48.01, 50)       # D1: just over 2 days rounds up to 3
+        self.check(60, 50)          # D1: 2.5 days counts as 3 (issue #1)
         self.check(72, 50)
-        self.check(156, 50)         # clarified: 6.5 days -> 6
-        self.check(167.99, 50)
+        self.check(144, 50)         # exactly 6 days
 
-    def test_seven_to_fourteen_whole_days_is_25(self):
+    def test_seven_to_fourteen_days_is_25(self):
+        self.check(144.01, 25)      # D1: just over 6 days rounds up to 7
+        self.check(156, 25)         # D1: 6.5 days counts as 7 (issue #1)
         self.check(168, 25)
-        self.check(336, 25)         # clarified: exactly 14 days -> 25
-        self.check(359.99, 25)
+        self.check(336, 25)         # exactly 14 days
 
-    def test_fifteen_days_or_more_is_10(self):
+    def test_more_than_fourteen_days_is_10(self):
+        self.check(336.01, 10)      # D1: 14 days and a bit rounds up to 15 (issue #1)
         self.check(360, 10)
         self.check(5000, 10)
 
@@ -93,28 +99,38 @@ class RoundingAndLevels(unittest.TestCase):
             self.assertEqual(priority.classify(value), level)
 
     def test_days_left_and_overdue_flag(self):
-        self.assertEqual(priority.score(at(60), "Easy", 1, NOW)["days_left"], 2)
+        self.assertEqual(priority.score(at(60), "Easy", 1, NOW)["days_left"], 3)    # rounded up (D1)
+        self.assertEqual(priority.score(at(12), "Easy", 1, NOW)["days_left"], 0)
         p = priority.score(at(-43.5), "Easy", 1, NOW)
         self.assertTrue(p["overdue"])
         self.assertEqual(p["score"], 58)
 
 
 class Ordering(unittest.TestCase):
-    def test_tie_on_shown_score_earlier_deadline_first(self):
-        a = {"id": 1, "deadline": at(130), "created_at": at(-10), "priority": {"score": 75}}
-        b = {"id": 2, "deadline": at(93.5), "created_at": at(-5), "priority": {"score": 75}}
-        c = {"id": 3, "deadline": at(10), "created_at": at(-1), "priority": {"score": 60}}
+    def test_tie_on_exact_score_earlier_deadline_first(self):
+        a = {"id": 1, "deadline": at(130), "created_at": at(-10), "priority": {"score": 75, "exact": 75}}
+        b = {"id": 2, "deadline": at(93.5), "created_at": at(-5), "priority": {"score": 75, "exact": 75}}
+        c = {"id": 3, "deadline": at(10), "created_at": at(-1), "priority": {"score": 60, "exact": 60}}
         ordered = sorted([a, c, b], key=priority.sort_key)
         self.assertEqual([t["id"] for t in ordered], [2, 1, 3])
 
+    def test_higher_exact_score_wins_when_shown_scores_match(self):
+        """Issue #2 / Khadija's TC-SORT-05: 78.4 and 77.5 both show 78; 78.4 comes first
+        even though 77.5 is due sooner."""
+        x = {"id": 1, "deadline": at(36), "created_at": at(-1), "priority": priority.score(at(36), "Hard", 8, NOW)}
+        y = {"id": 2, "deadline": at(47), "created_at": at(-1), "priority": priority.score(at(47), "Hard", 8.45, NOW)}
+        self.assertEqual((x["priority"]["exact"], y["priority"]["exact"]), (77.5, 78.4))
+        self.assertEqual((x["priority"]["score"], y["priority"]["score"]), (78, 78))
+        self.assertEqual([t["id"] for t in sorted([x, y], key=priority.sort_key)], [2, 1])
+
     def test_full_tie_earlier_created_first(self):
-        a = {"id": 1, "deadline": at(50), "created_at": at(-1), "priority": {"score": 70}}
-        b = {"id": 2, "deadline": at(50), "created_at": at(-9), "priority": {"score": 70}}
+        a = {"id": 1, "deadline": at(50), "created_at": at(-1), "priority": {"score": 70, "exact": 70}}
+        b = {"id": 2, "deadline": at(50), "created_at": at(-9), "priority": {"score": 70, "exact": 70}}
         self.assertEqual([t["id"] for t in sorted([a, b], key=priority.sort_key)], [2, 1])
 
     def test_completed_tasks_sort_after_open_tasks(self):
         done = {"id": 1, "deadline": at(1), "created_at": at(-1), "priority": None}
-        open_ = {"id": 2, "deadline": at(500), "created_at": at(-1), "priority": {"score": 5}}
+        open_ = {"id": 2, "deadline": at(500), "created_at": at(-1), "priority": {"score": 5, "exact": 5}}
         self.assertEqual([t["id"] for t in sorted([done, open_], key=priority.sort_key)], [2, 1])
 
 
