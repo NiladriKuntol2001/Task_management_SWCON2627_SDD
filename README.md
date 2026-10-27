@@ -9,6 +9,44 @@ This repository is the **Spec-Driven Development (SDD)** track of the SWCON2627 
 project (Zahra, Niladri, Khadija). It was built with GitHub Spec-Kit's workflow; the
 vibe-coded versions live in the separate repository `Task_management_SWCON2627`.
 
+## Screenshots
+
+### Student view
+
+**Sign in** — sign in or create an account. Every user sees only their own tasks.
+
+![Sign-in page](images/01-sign-in.png)
+
+**Dashboard** — answers "What should I work on today?" and shows how the 50/30/20 score
+was reached, plus task counts, upcoming deadlines and the priority mix.
+
+![Student dashboard](images/02-student-dashboard.png)
+
+**All tasks** — every task ranked by priority score. Filter by status or subject, search
+by title, and edit, complete or delete tasks.
+
+![All tasks list](images/03-all-tasks.png)
+
+**Overdue** — unfinished tasks whose deadline has passed, with how many days late each one is.
+
+![Overdue tasks](images/04-overdue.png)
+
+**Profile** — account details and task totals. Change your email or password here.
+
+![Student profile](images/05-profile.png)
+
+### Admin panel
+
+**Overview** — totals for all students: tasks, completion rate, critical and overdue
+counts, activity over the last 14 days, and students who need attention.
+
+![Admin overview](images/06-admin-overview.png)
+
+**Users** (dark theme) — search users, view their tasks, make them admin, or deactivate
+them. The main admin account is protected.
+
+![Admin users list in dark theme](images/07-admin-users-dark.png)
+
 ## Run it
 
 Needs Python 3.11 or newer.
