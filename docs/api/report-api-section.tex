@@ -1,0 +1,97 @@
+\section{Interface and API Specifications}
+The backend exposes a JSON REST API under \texttt{/api}. The full contract is written
+in OpenAPI~3.0 (Swagger) in \texttt{docs/api/openapi.yaml}; \texttt{docs/api/swagger.html}
+renders it as interactive Swagger UI (Figure~\ref{fig:swagger}). All endpoints except
+\texttt{/health}, \texttt{/auth/register} and \texttt{/auth/login} require the header
+\texttt{Authorization: Bearer <token>}, where the token is an HS256 JWT valid for 8 hours
+and revoked on sign-out. The contract was checked against the running server: all 19
+operations match the code, and every response in a 50-request run validated against
+the documented schemas.
+
+\begin{table}[H]
+\centering
+\caption{API endpoints}
+\label{tab:api}
+\small
+\begin{tabularx}{\textwidth}{@{}l l L l@{}}
+\toprule
+\textbf{Method} & \textbf{Endpoint} & \textbf{Purpose} & \textbf{Requirement} \\
+\midrule
+GET    & \texttt{/api/health} & Liveness check (no auth) & -- \\
+POST   & \texttt{/api/auth/register} & Create a student account and return a token & FR-01, FR-25 \\
+POST   & \texttt{/api/auth/login} & Authenticate and return a token & FR-02, FR-30 \\
+POST   & \texttt{/api/auth/logout} & Sign out; revoke the token & FR-03 \\
+GET    & \texttt{/api/tasks} & List own tasks; filter by status, subject, title; sort by priority or deadline; upcoming/overdue views & FR-15--FR-18, FR-21 \\
+POST   & \texttt{/api/tasks} & Create a task (validated, scored) & FR-04, FR-05, FR-10 \\
+GET    & \texttt{/api/tasks/\{id\}} & Task details with score breakdown & FR-09, FR-21 \\
+PUT    & \texttt{/api/tasks/\{id\}} & Edit a task; priority recalculated & FR-06, FR-10, FR-13 \\
+DELETE & \texttt{/api/tasks/\{id\}} & Delete a task & FR-07 \\
+PATCH  & \texttt{/api/tasks/\{id\}/complete} & Mark complete / incomplete & FR-08 \\
+POST   & \texttt{/api/priority/preview} & Live priority preview, nothing saved & FR-11--FR-14, FR-35 \\
+GET    & \texttt{/api/dashboard} & Counts, priority mix, upcoming, overdue, recommendation & FR-19, FR-20 \\
+GET    & \texttt{/api/me} & View own profile and task counts & FR-22 \\
+PATCH  & \texttt{/api/me/email} & Change email (current password required) & FR-23 \\
+PATCH  & \texttt{/api/me/password} & Change password (current password required) & FR-24 \\
+GET    & \texttt{/api/admin/overview} & System totals, 14-day trend, students needing attention & FR-27, FR-32 \\
+GET    & \texttt{/api/admin/users} & List/search users with task statistics & FR-28, FR-32 \\
+POST   & \texttt{/api/admin/users} & Create a student or admin user & FR-29, FR-32 \\
+PATCH  & \texttt{/api/admin/users/\{id\}} & Deactivate/reactivate or change role & FR-26, FR-30, FR-32 \\
+GET    & \texttt{/api/admin/tasks} & All open tasks across users, priority order & FR-31, FR-32 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Request and response format.}
+Requests and responses use \texttt{application/json}. A task is created with
+\texttt{title}, \texttt{subject}, \texttt{deadline} (ISO~8601 date-time),
+\texttt{difficulty} (\texttt{Easy}, \texttt{Medium}, \texttt{Hard}, \texttt{Very Hard})
+and \texttt{estimated\_hours} ($0 < h \le 1000$). Each returned task carries a
+\texttt{priority} object (shown \texttt{score}, \texttt{exact} score, \texttt{level},
+the three component scores and their weighted parts), or \texttt{null} once completed.
+Every error has the same shape, naming each invalid field and what to fix (NFR-07):
+
+\begin{verbatim}
+POST /api/tasks   {"title": "", "subject": "SWCON", "deadline": "2026-11-02T23:59:00Z",
+                   "difficulty": "Hard", "estimated_hours": 0}
+422  {"error": {"message": "Please fix the highlighted fields.",
+                "fields": {"title": "Title can't be empty.",
+                           "estimated_hours": "Estimated hours must be more than 0."}}}
+\end{verbatim}
+
+\begin{table}[H]
+\centering
+\caption{HTTP status codes}
+\label{tab:status}
+\small
+\begin{tabularx}{\textwidth}{@{}l L@{}}
+\toprule
+\textbf{Code} & \textbf{Meaning in this API} \\
+\midrule
+200 & Success with a JSON body \\
+201 & Created (register, new task, admin-created user) \\
+204 & Success with no body (logout, delete task, change password) \\
+400 & Body is not valid JSON or not a JSON object \\
+401 & Missing, invalid, expired or revoked token; wrong login; account inactive \\
+403 & Not an admin (FR-32); deactivated account at login; main admin or own account cannot be changed \\
+404 & Task or user not found --- also returned for another user's task, so it cannot be told apart from a missing one (FR-21) \\
+409 & Email already used by another account \\
+422 & Validation failed; nothing saved (NFR-06, NFR-12) \\
+500 & Unexpected server error, reported in the same error shape \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Main UI screens.}
+The single-page frontend has these screens: sign-in/register; student dashboard
+(``What should I work on today?'', counts, priority mix, upcoming); task list with
+filters, search and sort; add/edit task form with live priority preview; task detail
+with score breakdown; profile (change email and password); and the admin panel
+(overview, users, all tasks). All screens support light and dark themes and adapt to
+desktop and mobile (FR-33, FR-34).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{swagger-ui.png}
+\caption{Swagger UI rendering of the OpenAPI specification}
+\label{fig:swagger}
+\end{figure}
