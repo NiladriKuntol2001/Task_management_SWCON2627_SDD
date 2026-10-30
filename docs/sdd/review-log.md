@@ -6,12 +6,11 @@ review; note anything you changed.
 
 | File / area | Reviewer | Date | Findings | Changes made |
 |---|---|---|---|---|
-| `backend/app/priority.py` (formula — review against spec section "Priority Calculation") | | | | |
+| `backend/app/priority.py` (formula — review against spec section "Priority Calculation") | Khadija Bassoum | 2026-10-30 | Weights 50/30/20, deadline bands, difficulty table, time score min(10h, 100) and levels match the spec. Days rounded up (D1) and ties judged on the exact score (D2) since commit 3a64d19. Checked against 14 hand-calculated values; all TC-PRI tests pass. | None |
 | `backend/app/security.py` (hashing, tokens) | | | | |
 | `backend/app/tasks_repo.py` (owner filter on every query) | | | | |
 | `backend/app/routes/*.py` | | | | |
-| `backend/tests/*.py` (do tests match acceptance scenarios?) | | | | |
-| `frontend/js/**` | | | | |
+| `backend/tests/*.py` (do tests match acceptance scenarios?) | Khadija Bassoum | 2026-10-30 | Before 26 Oct the developer tests repeated the clarify answers that contradicted D1 and D2, so they could not catch SDD-01 and SDD-02; the independent suite in backend/verification/ (174 tests, all 35 requirements) found both. Updated in 3a64d19; all 86 developer tests and 174 verification tests pass. | None |
 | `frontend/css/app.css` | | | | |
 
 Suggested split: Zahra — spec conformance of routes and UI; Khadija — tests and
