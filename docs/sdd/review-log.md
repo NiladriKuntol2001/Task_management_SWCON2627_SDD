@@ -13,5 +13,3 @@ review; note anything you changed.
 | `backend/tests/*.py` (do tests match acceptance scenarios?) | Khadija Bassoum | 2026-10-30 | Before 26 Oct the developer tests repeated the clarify answers that contradicted D1 and D2, so they could not catch SDD-01 and SDD-02; the independent suite in backend/verification/ (174 tests, all 35 requirements) found both. Updated in 3a64d19; all 86 developer tests and 174 verification tests pass. | None |
 | `frontend/css/app.css` | | | | |
 
-Suggested split: Zahra — spec conformance of routes and UI; Khadija — tests and
-`priority.py`; Niladri — security and frontend.
